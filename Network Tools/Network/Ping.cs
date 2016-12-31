@@ -11,18 +11,31 @@ namespace Network_Tools
 {
     class PingNetwork
     {
-        public PingData Send(string _ipAddress)
+        public static PingData Send(string _ipAddress)
         {
             var ping = new Ping();
-            var ipAddress = IPAddress.Parse(_ipAddress);
-            var pingReply = ping.Send(ipAddress);
-            var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
 
-            return pingData;
+            try
+            {
+                var ipAddress = IPAddress.Parse(_ipAddress);
+                var pingReply = ping.Send(ipAddress);
+                var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
+
+                return pingData;
+            }
+
+            catch
+            {
+                var ipAddress = ResolveDNS.GetIP(_ipAddress);
+                var pingReply = ping.Send(ipAddress);
+                var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
+
+                return pingData;
+            }
         }
     }
 
-    class PingData
+    public class PingData
     {
         public IPStatus IpStatus { get; set; }
         public long RoundtripTime { get; set; }

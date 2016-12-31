@@ -1,6 +1,7 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,9 +25,6 @@ namespace Network_Tools
         public MainWindow()
         {
             InitializeComponent();
-
-            PingNetwork ping = new PingNetwork();
-            var pingData = ping.Send("8.8.8.8");
         }
 
         private void closeWindow_Button_Click(object sender, RoutedEventArgs e)
@@ -47,7 +45,39 @@ namespace Network_Tools
 
         private void addIP_Button_Click(object sender, RoutedEventArgs e)
         {
-            PopulateCards.AddCard(itemCanvas_Grid, "Google.com");
+            selectIP_DialogWindow.IsOpen = true;
+        }
+
+        private void saveIP_Button_Click(object sender, RoutedEventArgs e)
+        {
+            selectIP_DialogWindow.IsOpen = false;
+
+            if (dialogWindow_TextBox.Text != string.Empty)
+                Cards.AddCard(itemCanvas_Grid, dialogWindow_TextBox.Text);
+
+            if (itemCanvas_Grid.Children.OfType<Card>().Count() > 0)
+            {
+                notificationText_Label.Visibility = Visibility.Hidden;
+                notificationIcon_PackIcon.Visibility = Visibility.Hidden;
+            }
+
+            else if (itemCanvas_Grid.Children.OfType<Card>().Count() == 0)
+            {
+                notificationText_Label.Visibility = Visibility.Visible;
+                notificationIcon_PackIcon.Visibility = Visibility.Visible;
+            }
+
+            dialogWindow_TextBox.Text = null;
+
+            Cards.UpdatePings(itemCanvas_Grid);
+
+        }
+
+        private void cancel_Button_Click(object sender, RoutedEventArgs e)
+        {
+            selectIP_DialogWindow.IsOpen = false;
+            dialogWindow_TextBox.Text = null;
+
         }
     }
 }

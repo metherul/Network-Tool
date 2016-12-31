@@ -7,12 +7,14 @@ using MaterialDesignThemes.Wpf;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Media;
+using System.Net.NetworkInformation;
+using System.Diagnostics;
 
 namespace Network_Tools
 {
-    class PopulateCards
+    class Cards
     {
-        static public void AddCard(Grid _grid, string _ipAddress)
+        public static void AddCard(Grid _grid, string _ipAddress)
         {
             var items = _grid.Children.OfType<Card>();
             var placementLocation = 0;
@@ -29,6 +31,7 @@ namespace Network_Tools
                 FontFamily = new FontFamily("Roboto"),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Center,
+                Name = $"addressName_{itemCount}",
                 Content = ipAddress
             };
 
@@ -41,6 +44,7 @@ namespace Network_Tools
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 0, 90, 0),
+                Name = $"responseTime_{itemCount}",
                 Content = "-"
             };
 
@@ -69,9 +73,68 @@ namespace Network_Tools
                 Padding = new Thickness(8, 8, 8, 8),
                 Content = grid
             };
+
             card.SetResourceReference(Control.BackgroundProperty, "PrimaryHueLightBrush");
             card.SetResourceReference(Control.ForegroundProperty, "PrimaryHueLightForegroundBrush");
+
             _grid.Children.Add(card);
         }
+
+        public static void UpdatePings(Grid _grid)
+        {
+            List<long> times = new List<long>();
+            List<LabelData> labels = new List<LabelData>();
+
+            foreach (var card in _grid.Children.OfType<Card>())
+            {
+                Grid grid = (Grid)card.Content;
+                var gridLabels = grid.Children.OfType<Label>();
+
+                // Get Addresses and Response Times from Cards
+                foreach (var item in gridLabels)
+                {
+                    LabelData labelData = new LabelData();
+
+                    if (item.Name.StartsWith("addressName"))
+                    {
+                        labelData.addressLabel = item;
+                        Debug.WriteLine($"Address Name: {item.Name.ToString()}");
+                    }
+
+                    if (item.Name.StartsWith("responseTime"))
+                    {
+                        labelData.responseLabel = item;
+                        Debug.WriteLine($"Response Times: {item.Name.ToString()}");
+                    }
+
+                    labels.Add(labelData);
+                }
+            }
+
+            Debug.WriteLine("-");
+
+            foreach (var label in labels)
+            {
+                var pingResponse = PingNetwork.Send(label.addressLabel.Content.ToString());
+
+                if (pingResponse.IpStatus == IPStatus.Success)
+                {
+                    label.responseLabel.Content = pingResponse.RoundtripTime;
+                }
+
+                else
+                {
+                    label.responseLabel.Content = "Timed Out";
+                }
+            }
+
+            _grid.InvalidateVisual();
+        }
+    }
+
+    class LabelData
+    {
+        public Label addressLabel { get; set; }
+        public Label responseLabel { get; set; }
     }
 }

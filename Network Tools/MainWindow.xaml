@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Network_Tools"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -13,57 +14,40 @@
         TextOptions.TextRenderingMode="Auto"        
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}" WindowStyle="None" Width="412.321" Height="600" ResizeMode="NoResize" MouseDown="Window_MouseDown">
+    
     <Grid>
-        <materialDesign:ColorZone Mode="PrimaryDark" Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="0" Height="52"/>
-        <Button x:Name="closeWindow_Button" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Style="{DynamicResource MaterialDesignToolButton}" Margin="0,8,7,0" Click="closeWindow_Button_Click" >
+        <materialDesign:ColorZone Mode="PrimaryMid" Padding="16" materialDesign:ShadowAssist.ShadowDepth="Depth3" Margin="0" Height="52"/>
+        
+        <Button x:Name="closeWindow_Button" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Style="{DynamicResource MaterialDesignToolButton}" Margin="0,10,7,0" Click="closeWindow_Button_Click" Panel.ZIndex="1" >
             <materialDesign:PackIcon Kind="Close" Height="20" Width="20" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" Foreground="White"/>
         </Button>
-        <Button x:Name="minimizeWindow_Button" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Style="{DynamicResource MaterialDesignToolButton}" Margin="0,14,37,0" Click="minimizeWindow_Button_Click" >
+        <Button x:Name="minimizeWindow_Button" HorizontalAlignment="Right" VerticalAlignment="Top" Height="30" Width="30" Style="{DynamicResource MaterialDesignToolButton}" Margin="0,15,33,0" Click="minimizeWindow_Button_Click" Panel.ZIndex="1" >
             <materialDesign:PackIcon Kind="WindowMinimize" Height="15" Width="15" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0" Foreground="White"/>
         </Button>
-        <Button x:Name="addIP_Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="35" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}" Margin="7,8,0,0" Click="addIP_Button_Click" >
-            <materialDesign:PackIcon Kind="Plus" Height="20" Width="20" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White"/>
+        <Button x:Name="addIP_Button" HorizontalAlignment="Left" VerticalAlignment="Top" Height="35" Width="35" Style="{DynamicResource MaterialDesignFloatingActionAccentButton}" Margin="8,8,0,0" Click="addIP_Button_Click" Panel.ZIndex="1" >
+            <materialDesign:PackIcon Kind="Plus" Height="20" Width="20" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Foreground="White"/>
         </Button>
 
         <Grid Margin="0,59,0,0" Name="itemCanvas_Grid">
-            <materialDesign:Card Margin="5,0,5,5" Background="{DynamicResource PrimaryHueLightBrush}"
-                  Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                  Padding="8">
-                <Grid>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Left" VerticalAlignment="Center">8.8.8.8</Label>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,90,0">68ms</Label>
-                    <Button HorizontalAlignment="Right">
-                        <materialDesign:PackIcon Kind="Earth" Height="Auto" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Button>
-                </Grid>
-            </materialDesign:Card>
-
-            <materialDesign:Card Margin="5,28,5,0" Background="{DynamicResource PrimaryHueLightBrush}"
-                  Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                  Padding="8">
-                <Grid>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Left" VerticalAlignment="Center">107.322.11.Dammit</Label>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,90,0">1300ms</Label>
-                    <Button HorizontalAlignment="Right">
-                        <materialDesign:PackIcon Kind="Earth" Height="Auto" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Button>
-                </Grid>
-            </materialDesign:Card>
-
-            <materialDesign:Card Margin="5,56,5,0" Background="{DynamicResource PrimaryHueLightBrush}"
-                  Foreground="{DynamicResource PrimaryHueLightForegroundBrush}"
-                  Padding="8">
-                <Grid>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Left" VerticalAlignment="Center">Lol, do I need an IP</Label>
-                    <Label FontSize="14" FontFamily="Roboto" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,90,0">420ms</Label>
-                    <Button HorizontalAlignment="Right">
-                        <materialDesign:PackIcon Kind="Earth" Height="Auto" Width="Auto" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                    </Button>
-                </Grid>
-            </materialDesign:Card>
-
         </Grid>
 
+        <materialDesign:DialogHost IsOpen="false" Name="selectIP_DialogWindow">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid>
+                    <materialDesign:ColorZone Width="200" Height="120">
+                        <Grid Margin="5,5,0,0">
+                            <Label VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,5,0,0" FontFamily="Roboto">Enter an IP Address</Label>
+                            <TextBox VerticalAlignment="Center" Margin="10,0,15,20" FontFamily="Roboto" Name="dialogWindow_TextBox"></TextBox>
+                            <Button Width="80" Content="Save" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,5,5" Style="{DynamicResource MaterialDesignFlatButton}" Click="saveIP_Button_Click"/>
+                            <Button Width="80" Content="Cancel" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="0,0,0,5" Style="{DynamicResource MaterialDesignFlatButton}" Click="cancel_Button_Click"/>
+                        </Grid>
+                    </materialDesign:ColorZone>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
+        <Label x:Name="notificationText_Label" Content="You don't have any Addresses!" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" FontFamily="Roboto" FontSize="20" Margin="0,91,0,476" Foreground="Gray"/>
+        <materialDesign:PackIcon x:Name="notificationIcon_PackIcon" Kind="EmoticonSad" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Margin="0,143,0,377" Foreground="Gray"/>
 
     </Grid>
 </Window>

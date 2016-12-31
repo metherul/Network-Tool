@@ -64,8 +64,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Network\ResolveDNS.cs" />
     <Compile Include="Network\Traceroute.cs" />
-    <Compile Include="UI Code\PopulateCards.cs" />
+    <Compile Include="UI Code\Cards.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
