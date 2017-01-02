@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Controls;
 
 namespace Network_Tools
@@ -46,8 +48,14 @@ namespace Network_Tools
 
     class UpdateThread
     {
-        public static void Start(Grid _grid)
+        public async static void Start(Grid _grid)
         {
+            while (true)
+            {
+                Labels.Update(_grid);
+
+                await Task.Delay(2000);
+            }
         }
     }
 }

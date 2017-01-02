@@ -35,7 +35,7 @@ namespace Network_Tools
             var pingDataList = new List<PingData>();
 
             var times = labels.AsParallel().WithDegreeOfParallelism(64)
-                          .Select(h => new Ping().Send(h.addressLabel, 500));
+                          .Select(h => new Ping().Send(h.addressLabel, 1900));
             
             // Then, serialize back into the labels 
             foreach (var time in times)

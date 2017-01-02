@@ -25,6 +25,8 @@ namespace Network_Tools
         public MainWindow()
         {
             InitializeComponent();
+
+            UpdateThread.Start(itemCanvas_Grid);
         }
 
         private void closeWindow_Button_Click(object sender, RoutedEventArgs e)
@@ -69,7 +71,7 @@ namespace Network_Tools
 
             dialogWindow_TextBox.Text = null;
 
-            Labels.Update(itemCanvas_Grid);
+            // Labels.Update(itemCanvas_Grid);
 
         }
 
