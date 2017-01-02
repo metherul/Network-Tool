@@ -47,7 +47,7 @@
         </materialDesign:DialogHost>
 
         <Label x:Name="notificationText_Label" Content="You don't have any Addresses!" HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" FontFamily="Roboto" FontSize="20" Margin="0,91,0,476" Foreground="Gray"/>
-        <materialDesign:PackIcon x:Name="notificationIcon_PackIcon" Kind="EmoticonSad" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Margin="0,143,0,377" Foreground="Gray"/>
+        <materialDesign:PackIcon x:Name="notificationIcon_PackIcon" Kind="Webhook" HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Margin="0,143,0,377" Foreground="Gray"/>
 
     </Grid>
 </Window>

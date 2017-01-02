@@ -1,10 +1,6 @@
 C:\C# Projects\Network Tools\Network Tools\bin\Debug\Network Tools.exe.config
 C:\C# Projects\Network Tools\Network Tools\bin\Debug\Network Tools.exe
 C:\C# Projects\Network Tools\Network Tools\bin\Debug\Network Tools.pdb
-C:\C# Projects\Network Tools\Network Tools\bin\Debug\MaterialDesignColors.dll
-C:\C# Projects\Network Tools\Network Tools\bin\Debug\MaterialDesignThemes.Wpf.dll
-C:\C# Projects\Network Tools\Network Tools\bin\Debug\MaterialDesignThemes.Wpf.pdb
-C:\C# Projects\Network Tools\Network Tools\bin\Debug\MaterialDesignThemes.Wpf.xml
 C:\C# Projects\Network Tools\Network Tools\obj\Debug\Network Tools.csprojResolveAssemblyReference.cache
 C:\C# Projects\Network Tools\Network Tools\obj\Debug\MainWindow.g.cs
 C:\C# Projects\Network Tools\Network Tools\obj\Debug\App.g.cs

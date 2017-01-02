@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Diagnostics;
 
 namespace Network_Tools
 {
@@ -13,25 +14,37 @@ namespace Network_Tools
     {
         public static PingData Send(string _ipAddress)
         {
+            Debug.WriteLine(_ipAddress);
+
             var ping = new Ping();
 
-            try
-            {
-                var ipAddress = IPAddress.Parse(_ipAddress);
-                var pingReply = ping.Send(ipAddress);
-                var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
+            var ipAddress = ResolveDNS.GetIP(_ipAddress);
 
-                return pingData;
+            if (ipAddress == null)
+                return null;
+
+            var pingReply = ping.Send(ipAddress, 500);
+            var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
+
+            return pingData;
+        }
+
+        public static List<PingData> SendMultipleAsync(List<LabelData> _labels)
+        {
+            var labels = _labels;
+            var pingDataList = new List<PingData>();
+
+            var times = labels.AsParallel().WithDegreeOfParallelism(64)
+                          .Select(h => new Ping().Send(h.addressLabel, 500));
+            
+            // Then, serialize back into the labels 
+            foreach (var time in times)
+            {
+                var pingData = new PingData(time.Status, time.RoundtripTime, null);
+                pingDataList.Add(pingData);
             }
 
-            catch
-            {
-                var ipAddress = ResolveDNS.GetIP(_ipAddress);
-                var pingReply = ping.Send(ipAddress);
-                var pingData = new PingData(pingReply.Status, pingReply.RoundtripTime, ipAddress);
-
-                return pingData;
-            }
+            return pingDataList;
         }
     }
 
@@ -44,8 +57,9 @@ namespace Network_Tools
         public PingData(IPStatus _ipStatus, long _roundTripTime, IPAddress _ipAddress)
         {
             IpStatus = _ipStatus;
-            RoundtripTime = _roundTripTime;
             IpAddress = _ipAddress;
+            RoundtripTime = _roundTripTime;
+
         }
 
     }

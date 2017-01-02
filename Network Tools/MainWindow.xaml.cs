@@ -69,7 +69,7 @@ namespace Network_Tools
 
             dialogWindow_TextBox.Text = null;
 
-            Cards.UpdatePings(itemCanvas_Grid);
+            Labels.Update(itemCanvas_Grid);
 
         }
 

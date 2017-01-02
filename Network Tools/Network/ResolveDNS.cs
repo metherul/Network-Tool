@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,10 +13,23 @@ namespace Network_Tools
     {
         public static IPAddress GetIP(string _hostAddress)
         {
-            string hostAddress = _hostAddress;
-            var address = Dns.GetHostAddresses(hostAddress)[0];
+            var hostAddress = _hostAddress;
+            Debug.WriteLine(hostAddress);
 
-            return address;
+            try
+            {
+                return IPAddress.Parse(hostAddress);
+            }
+
+            catch (SocketException)
+            {
+                return null;
+            }
+
+            catch
+            {
+                return Dns.GetHostAddresses(hostAddress)[0];
+            }
         }
     }
 }
